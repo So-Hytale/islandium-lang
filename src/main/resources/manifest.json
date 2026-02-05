@@ -1,0 +1,13 @@
+{
+  "Group": "islandium",
+  "Name": "lang-editor",
+  "Version": "1.0.0",
+  "Description": "Language file editor with search functionality",
+  "Main": "com.islandium.langeditor.LangEditorPlugin",
+  "Website": "",
+  "ServerVersion": "*",
+  "Dependencies": {
+    "Hytale:EntityModule": "*"
+  },
+  "IncludesAssetPack": true
+}

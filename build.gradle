@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+archivesBaseName = 'islandium-lang'
+
+dependencies {
+    // Hytale Server API (compile-only car fourni par le serveur)
+    compileOnly files('../libs/HytaleServer.jar')
+
+    // Annotations
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+}
+
+jar {
+    archiveBaseName.set('islandium-lang')
+    archiveClassifier.set('')
+    archiveVersion.set(version)
+
+    manifest {
+        attributes(
+            'Main-Class': 'com.islandium.langeditor.LangEditorPlugin',
+            'Implementation-Title': 'Lang Editor',
+            'Implementation-Version': version,
+            'Implementation-Vendor-Id': 'com.islandium',
+            'Java-Version': '21'
+        )
+    }
+}
