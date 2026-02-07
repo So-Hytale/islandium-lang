@@ -34,15 +34,15 @@ public class LangEditorPlugin extends JavaPlugin {
         // Register command
         getCommandRegistry().registerCommand(new LangEditorCommand(this));
 
-        // Register in main menu
-        IslandiumUIRegistry.getInstance().register(new IslandiumUIRegistry.Entry(
-                "lang",
-                "LANGUES",
-                "Editeur de traductions",
-                "#69f0ae",
-                playerRef -> new LangFileSelectPage(playerRef, this, "./mods"),
-                false
-        ));
+        // Bouton menu desactive pour le moment
+        // IslandiumUIRegistry.getInstance().register(new IslandiumUIRegistry.Entry(
+        //         "lang",
+        //         "LANGUES",
+        //         "Editeur de traductions",
+        //         "#69f0ae",
+        //         playerRef -> new LangFileSelectPage(playerRef, this, "./mods"),
+        //         false
+        // ));
 
         log(Level.INFO, "LangEditor plugin initialized!");
         log(Level.INFO, "Use /langedit to open the editor.");
