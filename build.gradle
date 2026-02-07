@@ -5,6 +5,9 @@ plugins {
 archivesBaseName = 'islandium-lang'
 
 dependencies {
+    // Islandium Core (compileOnly car fourni comme plugin separe)
+    compileOnly project(':islandium-core')
+
     // Hytale Server API (compile-only car fourni par le serveur)
     compileOnly files('../libs/HytaleServer.jar')
 

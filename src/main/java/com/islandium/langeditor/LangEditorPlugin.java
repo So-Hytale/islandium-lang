@@ -1,6 +1,8 @@
 package com.islandium.langeditor;
 
+import com.islandium.core.ui.IslandiumUIRegistry;
 import com.islandium.langeditor.command.LangEditorCommand;
+import com.islandium.langeditor.ui.pages.LangFileSelectPage;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +33,16 @@ public class LangEditorPlugin extends JavaPlugin {
 
         // Register command
         getCommandRegistry().registerCommand(new LangEditorCommand(this));
+
+        // Register in main menu
+        IslandiumUIRegistry.getInstance().register(new IslandiumUIRegistry.Entry(
+                "lang",
+                "LANGUES",
+                "Editeur de traductions",
+                "#69f0ae",
+                playerRef -> new LangFileSelectPage(playerRef, this, "./mods"),
+                false
+        ));
 
         log(Level.INFO, "LangEditor plugin initialized!");
         log(Level.INFO, "Use /langedit to open the editor.");
