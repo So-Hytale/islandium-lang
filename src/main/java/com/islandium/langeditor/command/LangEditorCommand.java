@@ -5,6 +5,8 @@ import com.islandium.langeditor.service.LangFileManager;
 import com.islandium.langeditor.ui.pages.LangEditorMainPage;
 import com.islandium.langeditor.ui.pages.LangFileSelectPage;
 import com.islandium.langeditor.util.ColorUtil;
+import com.islandium.core.api.util.NotificationType;
+import com.islandium.core.api.util.NotificationUtil;
 import com.hypixel.hytale.server.core.command.system.AbstractCommand;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
@@ -65,7 +67,7 @@ public class LangEditorCommand extends AbstractCommand {
      */
     private CompletableFuture<Void> executeSelect(CommandContext ctx) {
         if (!ctx.isPlayer()) {
-            ctx.sendMessage(ColorUtil.parse("&cCette commande doit etre executee par un joueur."));
+            NotificationUtil.send(ctx, NotificationType.ERROR, "Cette commande doit etre executee par un joueur.");
             return CompletableFuture.completedFuture(null);
         }
 
@@ -73,7 +75,7 @@ public class LangEditorCommand extends AbstractCommand {
 
         var ref = player.getReference();
         if (ref == null || !ref.isValid()) {
-            ctx.sendMessage(ColorUtil.parse("&cErreur: impossible d'ouvrir l'interface."));
+            NotificationUtil.send(ctx, NotificationType.ERROR, "Impossible d'ouvrir l'interface.");
             return CompletableFuture.completedFuture(null);
         }
 
@@ -83,7 +85,7 @@ public class LangEditorCommand extends AbstractCommand {
         return CompletableFuture.runAsync(() -> {
             var playerRef = store.getComponent(ref, PlayerRef.getComponentType());
             if (playerRef == null) {
-                ctx.sendMessage(ColorUtil.parse("&cErreur: PlayerRef non trouve."));
+                NotificationUtil.send(ctx, NotificationType.ERROR, "PlayerRef non trouve.");
                 return;
             }
 
@@ -97,7 +99,7 @@ public class LangEditorCommand extends AbstractCommand {
      */
     private CompletableFuture<Void> executeOpen(CommandContext ctx, String path) {
         if (!ctx.isPlayer()) {
-            ctx.sendMessage(ColorUtil.parse("&cCette commande doit etre executee par un joueur."));
+            NotificationUtil.send(ctx, NotificationType.ERROR, "Cette commande doit etre executee par un joueur.");
             return CompletableFuture.completedFuture(null);
         }
 
@@ -105,23 +107,22 @@ public class LangEditorCommand extends AbstractCommand {
 
         // Validate file extension
         if (!path.endsWith(".lang")) {
-            ctx.sendMessage(ColorUtil.parse("&cLe fichier doit avoir l'extension .lang"));
+            NotificationUtil.send(ctx, NotificationType.ERROR, "Le fichier doit avoir l'extension .lang");
             return CompletableFuture.completedFuture(null);
         }
 
         // Try to load the file
         if (!LangFileManager.get().loadFile(path)) {
-            ctx.sendMessage(ColorUtil.parse("&cImpossible de charger le fichier: " + path));
-            ctx.sendMessage(ColorUtil.parse("&7Verifiez que le chemin est correct."));
+            NotificationUtil.send(ctx, NotificationType.ERROR, "Impossible de charger le fichier: " + path);
             return CompletableFuture.completedFuture(null);
         }
 
         int entryCount = LangFileManager.get().getEntryCount();
-        ctx.sendMessage(ColorUtil.parse("&aFichier charge: " + LangFileManager.get().getCurrentFileName() + " (" + entryCount + " entrees)"));
+        NotificationUtil.send(ctx, NotificationType.SUCCESS, "Fichier charge: " + LangFileManager.get().getCurrentFileName(), entryCount + " entrees");
 
         var ref = player.getReference();
         if (ref == null || !ref.isValid()) {
-            ctx.sendMessage(ColorUtil.parse("&cErreur: impossible d'ouvrir l'interface."));
+            NotificationUtil.send(ctx, NotificationType.ERROR, "Impossible d'ouvrir l'interface.");
             return CompletableFuture.completedFuture(null);
         }
 
@@ -131,7 +132,7 @@ public class LangEditorCommand extends AbstractCommand {
         return CompletableFuture.runAsync(() -> {
             var playerRef = store.getComponent(ref, PlayerRef.getComponentType());
             if (playerRef == null) {
-                ctx.sendMessage(ColorUtil.parse("&cErreur: PlayerRef non trouve."));
+                NotificationUtil.send(ctx, NotificationType.ERROR, "PlayerRef non trouve.");
                 return;
             }
 
@@ -147,7 +148,7 @@ public class LangEditorCommand extends AbstractCommand {
         List<Path> langFiles = LangFileManager.get().findLangFiles(directory);
 
         if (langFiles.isEmpty()) {
-            ctx.sendMessage(ColorUtil.parse("&eAucun fichier .lang trouve dans: " + directory));
+            NotificationUtil.send(ctx, NotificationType.WARNING, "Aucun fichier .lang trouve dans: " + directory);
             return CompletableFuture.completedFuture(null);
         }
 
